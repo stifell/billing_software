@@ -5,9 +5,11 @@ import com.stifell.billingsoftware.io.CategoryRequest;
 import com.stifell.billingsoftware.io.CategoryResponse;
 import com.stifell.billingsoftware.repository.CategoryRepository;
 import com.stifell.billingsoftware.service.CategoryService;
+import com.stifell.billingsoftware.service.FileUploadService;
 import lombok.Builder;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.UUID;
@@ -18,11 +20,14 @@ import java.util.stream.Collectors;
 @Builder
 public class CategoryServiceImpl implements CategoryService {
     private final CategoryRepository categoryRepository;
+    private final FileUploadService fileUploadService;
 
     @Override
-    public CategoryResponse add(CategoryRequest request) {
+    public CategoryResponse add(CategoryRequest request, MultipartFile file) {
+        String imgUrl = fileUploadService.upload(file);
         CategoryEntity newCategory = convertToEntity(request);
-        newCategory =  categoryRepository.save(newCategory);
+        newCategory.setImgUrl(imgUrl);
+        newCategory = categoryRepository.save(newCategory);
         return convertToResponse(newCategory);
     }
 
@@ -38,6 +43,7 @@ public class CategoryServiceImpl implements CategoryService {
     public void delete(String categoryId) {
         CategoryEntity existingCategory = categoryRepository.findByCategoryId(categoryId)
                 .orElseThrow(() -> new RuntimeException("Category not found: " + categoryId));
+        fileUploadService.deleteFile(existingCategory.getImgUrl());
         categoryRepository.delete(existingCategory);
     }
 
