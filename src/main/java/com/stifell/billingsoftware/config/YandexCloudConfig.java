@@ -1,6 +1,5 @@
 package com.stifell.billingsoftware.config;
 
-import jakarta.annotation.PostConstruct;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -19,6 +18,7 @@ import java.net.URI;
 import java.time.Duration;
 
 @Configuration
+@Slf4j
 public class YandexCloudConfig {
     @Value("${yandex.cloud.access.key}")
     private String accessKey;
@@ -28,15 +28,16 @@ public class YandexCloudConfig {
     private String region;
     @Value("${yandex.cloud.endpoint.url}")
     private String endPointUrl;
-    @Value("${proxy.host}")
+    @Value("${proxy.host:}")
     private String proxyHost;
-    @Value("${proxy.port}")
+    @Value("${proxy.port:0}")
     private int proxyPort;
-    @Value("${proxy.user}")
+    @Value("${proxy.user:}")
     private String proxyUser;
-    @Value("${proxy.password}")
+    @Value("${proxy.password:}")
     private String proxyPassword;
-
+    @Value("${proxy.domain:}")
+    private String proxyDomain;
     @Bean
     public S3Client s3Client() {
         S3ClientBuilder builder = S3Client.builder()
