@@ -16,13 +16,13 @@ const CategoryList = () => {
             if (response.status === 204) {
                 const updatedCategories = categories.filter(category => category.categoryId !== categoryId);
                 setCategories(updatedCategories);
-                // toast.success("Category deleted");
+                // toast.success("Категория удалена");
             } else {
-                // toast.error("Unable to delete category");
+                // toast.error("Не удается удалить категорию");
             }
         } catch (error) {
             console.log(error);
-            // toast.error("Unable to delete category");
+            // toast.error("Не удается удалить категорию");
         }
     };
     return (

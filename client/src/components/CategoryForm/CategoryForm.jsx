@@ -26,16 +26,16 @@ const CategoryForm = () => {
 
     const onSubmitHandler = async (e) => {
         e.preventDefault();
-        // if(!image) {
-        //     setLoading(false);
-        //     // toast.error("Select image for category")
-        //     return;
-        // }
+        if(!image) {
+            setLoading(false);
+            // toast.error("Select image for category")
+            return;
+        }
         
         setLoading(true);
         const formData = new FormData();
         formData.append("category", JSON.stringify(data));
-        // formData.append("file", image);
+        formData.append("file", image);
         try {
             const repsonse = await addCategory(formData);
             if (repsonse.status === 201) {
