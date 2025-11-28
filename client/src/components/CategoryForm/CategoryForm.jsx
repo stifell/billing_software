@@ -28,7 +28,8 @@ const CategoryForm = () => {
         e.preventDefault();
         if(!image) {
             setLoading(false);
-            // toast.error("Select image for category")
+            // toast.error("Выберите изображение для товара");
+            console.error("Выберите изображение для товара");
             return;
         }
         
@@ -40,7 +41,8 @@ const CategoryForm = () => {
             const repsonse = await addCategory(formData);
             if (repsonse.status === 201) {
                 setCategories([...categories, repsonse.data]);
-                toast.success("Category added");
+                // toast.success("Категория успешно добавлена");
+                console.log("Категория успешно добавлена");
                 setData({
                     name: "",
                     description: "",
@@ -50,7 +52,7 @@ const CategoryForm = () => {
             }
         } catch (err) {
             console.error(err);
-            toast.error("Error adding category");
+            // toast.error("Ошибка при добавлении категории");
         } finally {
             setLoading(false);
         }
