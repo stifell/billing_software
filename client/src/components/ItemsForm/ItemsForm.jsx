@@ -5,7 +5,7 @@ import { useContext, useState } from "react";
 import toast from "react-hot-toast";
 
 const ItemsForm = () => {
-    const {categories, setItemsData, itemsData} = useContext(AppContext);
+    const {categories, setItemsData, itemsData, setCategories} = useContext(AppContext);
     const [image, setImage] = useState(false);
     const [data, setData] = useState({
         name: "",
@@ -36,7 +36,8 @@ const ItemsForm = () => {
             const response = await addItem(formData);
             if (response.status === 201) {
                 setItemsData([...itemsData, response.data]);
-                // TODO: update category state
+                setCategories((prevCategories) => 
+                prevCategories.map((category) => category.categoryId === data.categoryId ? {...category, items: category.items + 1} : category));
                 // toast.success("Товар успешно добавлен");
                 console.log("Товар успешно добавлен");
                 setData({
